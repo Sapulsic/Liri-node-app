@@ -3,7 +3,7 @@ require("dotenv").config();
 let keysUnlock = require("./keys.js")
 
 var Spotify = require("node-spotify-api")
-var spotify = new Spotify(keys.spotify);
+// var spotify = new Spotify(keysUnlock.spotify);
 
 var momentJS = require("moment");
 var request = require("request");
@@ -79,7 +79,7 @@ function thisMovie(term) {
 }
 
 function spotifySong(term) {
-    var user  = new Spotify(keys.spotify);
+    var user = new Spotify(keysUnlock.spotify);
 
     if (!term) {
         term = "In the End";
