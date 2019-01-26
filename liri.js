@@ -11,7 +11,7 @@ var request = require("request");
 var fs = require("fs")
 
 var search = process.argv;
-var order = inputString[2];
+var order = search[2];
 var term = process.argv.slice(3).join(" ");
 
 
