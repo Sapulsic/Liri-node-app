@@ -19,35 +19,32 @@ switch (order) {
             thisConcert(term);
         break;
     case "spotify-this-song":
-        if(!term) {
-            predefinedSong();
-        }
-        else {
             spotifySong(term);
-        }
         break;
     case "movie-this":
-        if (!term) {
-            predefinedMovie();
-        }
-        else {
             thisMovie(term);
-        }
         break;
     case "do-what-it-says" :
-
-    break;
+            doWhatItSays();
+        break;
 
     default:
         break;
 }
 
 function thisConcert(term) {
-    var =  bandInTown = "https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp";
+    var  bandInTown = "https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp";
 
     request(queryURL, function(error, response, body) {
         if (!error && response.statusCode === 200) {
 
+
+            var concert = JSON.parse(body);
+            var randomDate = concert[0].datetime;
+            var randomDateFormat = "YYYY/MM/DD/hh:mm:ss";
+
+            var convertedDate = momentJS(randomDate, randomDateFormat);
+            var fixedDate = momentJS(convertedDate).format("MM/DD/YYYY");
 
         }
     });
@@ -56,6 +53,10 @@ function thisConcert(term) {
 function thisMovie(term) {
     var queryURL = "http://www.omdbapi.com/?t=" + term + "&apikey=eaaa83c3";
     request(queryURL, function(error, response, body) {
+
+        if (!term) {
+            term = "The Matrix";
+        }
 
         if (!error && response.statusCode === 200) {
 
@@ -72,11 +73,20 @@ function thisMovie(term) {
 }
 
 function spotifySong(term) {
+    var user  = new Spotify(keys.spotify);
 
-    request(queryURL, function(error, response, body) {
-
-    if (!error && response.statusCode === 200) {
-
+    if (!term) {
+        term = "In the End";
     }
-});
+
+    user.search({ type: 'track', query: term }, function (err, data) {
+
+        var songInfo = data.tracks.items;
+        console.log("\n");
+        console.log("Artist(s): " + songInfo[0].artists[0].name);
+        console.log("Song Name: " + songInfo[0].name);
+        console.log("Album: " + songInfo[0].album.name);
+        console.log("Preview Link: " + songInfo[0].preview_url);
+    });
+
 }
