@@ -8,6 +8,7 @@ var spotify = new Spotify(keys.spotify);
 var momentJS = require("moment");
 var request = require("request");
 
+var fs = require("fs")
 
 var search = process.argv;
 var order = inputString[2];
@@ -35,7 +36,7 @@ switch (order) {
 function thisConcert(term) {
     var  bandInTown = "https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp";
 
-    request(queryURL, function(error, response, body) {
+    request(bandInTown, function(error, response, body) {
         if (!error && response.statusCode === 200) {
 
 
@@ -45,6 +46,11 @@ function thisConcert(term) {
 
             var convertedDate = momentJS(randomDate, randomDateFormat);
             var fixedDate = momentJS(convertedDate).format("MM/DD/YYYY");
+
+            console.log("Venue: " + concert[0].venue.name);
+            console.log("Venue Location: " + concert[0].venue.city + ", " + concert[0].venue.region );
+            console.log("Date: " + fixedDate);
+
 
         }
     });
@@ -89,4 +95,18 @@ function spotifySong(term) {
         console.log("Preview Link: " + songInfo[0].preview_url);
     });
 
+}
+
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function(error, data ) {
+
+        if (error) {
+            return console.log(error);
+        }
+
+        var dataArr = data.split(",");
+        var newSong = dataArr[i];
+        spotifySong(newSong);
+
+    });
 }
